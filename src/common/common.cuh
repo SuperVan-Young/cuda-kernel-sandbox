@@ -1,11 +1,18 @@
-#include "common.cuh"
+#ifndef CKS_COMMON_CUH_
+#define CKS_COMMON_CUH_
 
-using namespace std;
-using namespace cks::common;
+#include "common/dtype.cuh"
+#include "common/error.cuh"
+#include "kernel/sgemm.cuh"
 
-namespace cks {namespace common {
+#include <stdio.h>
 
-RetCode runKernel(int kernel, int version, KernelArgs* args) {
+// kernel ID
+#define KER_SGEMM   0
+
+namespace cks { namespace common {
+
+retCode_t runKernel(int kernel, int version, KernelArgs* args) {
     switch (kernel) {
         case KER_SGEMM: return cks::sgemm::runKernel(version, args);
         default: return RC_ERROR;
@@ -26,4 +33,6 @@ double speedTestKernel(int kernel, int version, KernelArgs *args) {
     }
 }
 
-}}  // namespace cks common
+}} // namespace cks::common
+
+#endif

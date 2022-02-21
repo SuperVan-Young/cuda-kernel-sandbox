@@ -4,5 +4,6 @@ using namespace std;
 
 int main() {
     // 
-    // runKernel
+    cks::common::runKernel(0,0,NULL);
+    return 0;
 }
