@@ -1,5 +1,7 @@
-#ifndef _CKS_COMMON_CUH_
-#define _CKS_COMMON_CUH_
+#ifndef CKS_COMMON_CUH_
+#define CKS_COMMON_CUH_
+
+#include "kernel/sgemm.cuh"
 
 #include <stdio.h>
 
@@ -25,13 +27,15 @@ do {                                           \
     exit(1);                                   \
 } while (0)
 
-using namespace std;
+
 namespace cks { namespace common {
 
 typedef int RetCode;
 
 #define RC_SUCCESS  0
 #define RC_ERROR   -1
+
+#define KER_SGEMM   0
 
 class KernelArgs {};
 
