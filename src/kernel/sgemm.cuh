@@ -12,10 +12,6 @@ namespace cks { namespace sgemm {
 
 cks::common::retCode_t runKernel(int version, cks::sgemm::SgemmArgs *args);
 
-bool verifyKernel(int version, cks::sgemm::SgemmArgs *args);
-
-double speedTestKernel(int version, cks::sgemm::SgemmArgs *args);
-
 }}  // namespace cks::sgemm
 
 #endif

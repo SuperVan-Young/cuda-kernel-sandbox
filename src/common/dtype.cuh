@@ -3,16 +3,31 @@
 
 namespace cks {namespace common{
 
-// Return type for low-level APIs
+/**
+ * Return type of low-level APIs
+ * It's recommended to call these APIs with macro `CKS_CALL`
+ */
 typedef enum {
     RC_SUCCESS = 0,
     RC_ERROR =  -1,
 } retCode_t;
 
-// bass class for kernel arguments
-class KernelArgs {};
+/**
+ * Base Class for kernel arguments.
+ */
+class KernelArgs {
+public:
+    virtual retCode_t deepcopy(KernelArgs **p_target) = 0;
 
-// base class for data loading
+    virtual retCode_t destroyCopy(KernelArgs *p_target) = 0;
+    
+    virtual bool equalResult(KernelArgs *p_target) = 0;
+};
+
+
+/**
+ * Base Class for loading data
+ */
 class DataLoader {
 public:
 
@@ -24,7 +39,7 @@ public:
     
     virtual retCode_t step() = 0;
     
-    virtual retCode_t log() = 0;
+    virtual retCode_t log(float perf) = 0;
 };
 
 }}  // namespace cks::common

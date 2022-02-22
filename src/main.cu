@@ -30,13 +30,16 @@ int main(int argc, char *argv[]) {
     cks::common::DataLoader *p_dataloader = cks::common::createDataLoader(kernel_id);
 
     // for each data, verify and speedTest it
-    for (int i = 0; i < p_dataloader->len(); p_dataloader->step()) {
+    // TODO: complete main code <- sgemm verify and speedTest
+    for (int i = 0; i < p_dataloader->len(); i++) {
         cks::common::KernelArgs *p_args;
         p_dataloader->loadData(&p_args);
-        cks::common::runKernel(kernel_id, version_id, p_args);
+        float res = cks::common::speedTestKernel(kernel_id, version_id, p_args);
+        printf("%g\n", res);
         p_dataloader->freeData(p_args);
+        p_dataloader->step();
     }
 
     // free dataloader
-    delete p_dataloader;
+    cks::common::destroyDataLoader(p_dataloader);
 }

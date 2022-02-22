@@ -18,9 +18,11 @@ retCode_t runKernel(int kernel, int version, KernelArgs* args);
 
 bool verifyKernel(int kernel, int version, KernelArgs *args);
 
-double speedTestKernel(int kernel, int version, KernelArgs *args);
+float speedTestKernel(int kernel, int version, KernelArgs *args);
 
 DataLoader *createDataLoader(int kernel);
+
+void destroyDataLoader(DataLoader *p);
 
 }} // namespace cks::common
 

@@ -9,7 +9,7 @@ do {                                                                     \
     if (error_code != cudaSuccess) {                                     \
         printf("CUDA Error:\n");                                         \
         printf("    File:       %s\n", __FILE__);                        \
-        printf("    Line:       %s\n", __LINE__);                        \
+        printf("    Line:       %d\n", __LINE__);                        \
         printf("    Error Code: %d\n", error_code);                      \
         printf("    Error Text: %s\n", cudaGetErrorString(error_code));  \
         exit(1);                                                         \
@@ -22,7 +22,7 @@ do {                                                                     \
     if (error_code != RC_SUCCESS) {                                      \
         printf("CKS Error:\n");                                          \
         printf("    File:       %s\n", __FILE__);                        \
-        printf("    Line:       %s\n", __LINE__);                        \
+        printf("    Line:       %d\n", __LINE__);                        \
         printf("    Error Code: %d\n", error_code);                      \
         exit(1);                                                         \
     }                                                                    \

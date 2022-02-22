@@ -5,5 +5,5 @@ file(GLOB_RECURSE CKS_MAIN_SRC
     data/*.cu
     kernel/*.cu)
 
-message(STATUS "${CKS_MAIN_SRC}")
+# message(STATUS "${CKS_MAIN_SRC}")
 add_executable(main main.cu ${CKS_MAIN_SRC})

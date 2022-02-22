@@ -10,17 +10,40 @@ retCode_t runKernel(int kernel, int version, KernelArgs* args) {
 }
 
 bool verifyKernel(int kernel, int version, KernelArgs *args) {
-    switch (kernel) {
-        case KER_SGEMM: return cks::sgemm::verifyKernel(version, (cks::sgemm::SgemmArgs *)args);
-        default: return false;
-    }
+    KernelArgs *args_copy = nullptr;
+
+    CKS_CALL(args->deepcopy(&args_copy));
+
+    CKS_CALL(runKernel(kernel, version, args));
+    CKS_CALL(runKernel(kernel, version, args_copy));
+
+    retCode_t ret;
+    if (args->equalResult(args_copy))
+        ret = RC_SUCCESS;
+    else
+        ret = RC_ERROR;
+    
+    CKS_CALL(args->destroyCopy(args_copy));
+    return ret;
 }
 
-double speedTestKernel(int kernel, int version, KernelArgs *args) {
-    switch (kernel) {
-        case KER_SGEMM: return cks::sgemm::speedTestKernel(version, (cks::sgemm::SgemmArgs *)args);
-        default: return 0.0;
-    }
+float speedTestKernel(int kernel, int version, KernelArgs *args) {
+    cudaEvent_t start, stop;
+    CUDA_CALL(cudaEventCreate(&start));
+    CUDA_CALL(cudaEventCreate(&stop));
+    CUDA_CALL(cudaEventRecord(start));
+    cudaEventQuery(start);
+
+    CKS_CALL(runKernel(kernel, version, args));
+
+    CUDA_CALL(cudaEventRecord(stop));
+    CUDA_CALL(cudaEventSynchronize(stop));
+    float elapsed_time;
+    CUDA_CALL(cudaEventElapsedTime(&elapsed_time, start, stop));
+    CUDA_CALL(cudaEventDestroy(start));
+    CUDA_CALL(cudaEventDestroy(stop));
+
+    return elapsed_time;
 }
 
 DataLoader *createDataLoader(int kernel) {
@@ -30,6 +53,11 @@ DataLoader *createDataLoader(int kernel) {
         default: break;
     }
     return p;  // should delete p in the end!
+}
+
+void destroyDataLoader(DataLoader *p) {
+    delete p;
+    return;
 }
 
 }}  // namespace cks::common
