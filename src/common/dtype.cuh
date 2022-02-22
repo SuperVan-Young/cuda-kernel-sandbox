@@ -12,13 +12,13 @@ class KernelArgs {};
 // base class for data loading
 class DataLoader {
 public:    
-    virtual RetCode loadData(KernelArgs **p_data);
+    virtual retCode_t loadData(KernelArgs **p_data);
     
-    virtual RetCode freeData(KernelArgs *p_data);
+    virtual retCode_t freeData(KernelArgs *p_data);
     
-    virtual RetCode step();
+    virtual retCode_t step();
     
-    virtual RetCode log();
+    virtual retCode_t log();
 };
 
 }}  // namespace cks::common

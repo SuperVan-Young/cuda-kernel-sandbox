@@ -4,13 +4,15 @@
 #include "common/dtype.cuh"
 #include "common/error.cuh"
 
-typedef cks::common::retCode_t retCode_t;
+#include "data/sgemm.cuh"
+
+using cks::common::retCode_t;
 
 namespace cks {namespace sgemm{
 
 retCode_t sgemmKernel_v1(SgemmArgs *args);
 
-}};  // namespace cks::sgemm
+}}  // namespace cks::sgemm
 
 
 #endif

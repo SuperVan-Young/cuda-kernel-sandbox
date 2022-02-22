@@ -3,6 +3,8 @@
 
 #include "common/dtype.cuh"
 #include "common/error.cuh"
+
+#include "data/sgemm.cuh"
 #include "kernel/sgemm.cuh"
 
 #include <stdio.h>
@@ -12,26 +14,11 @@
 
 namespace cks { namespace common {
 
-retCode_t runKernel(int kernel, int version, KernelArgs* args) {
-    switch (kernel) {
-        case KER_SGEMM: return cks::sgemm::runKernel(version, args);
-        default: return RC_ERROR;
-    }
-}
+retCode_t runKernel(int kernel, int version, KernelArgs* args);
 
-bool verifyKernel(int kernel, int version, KernelArgs *args) {
-    switch (kernel) {
-        case KER_SGEMM: return cks::sgemm::verifyKernel(version, args)
-        default: return false;
-    }
-}
+bool verifyKernel(int kernel, int version, KernelArgs *args);
 
-double speedTestKernel(int kernel, int version, KernelArgs *args) {
-    switch (kernel) {
-        case KER_SGEMM: return cks::sgemm::speedTestKernel(version, args)
-        default: return 0.0;
-    }
-}
+double speedTestKernel(int kernel, int version, KernelArgs *args);
 
 }} // namespace cks::common
 

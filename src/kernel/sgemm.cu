@@ -2,6 +2,14 @@
 
 namespace cks { namespace sgemm {
 
+cks::common::retCode_t runKernel(int version, SgemmArgs *args) {
+    switch (version) {
+        case 0:  return sgemmKernel_cuBLAS(args);
+        case 1:  return sgemmKernel_v1(args);
+        default: return cks::common::RC_ERROR;
+    }
+}
+
 bool verifyKernel(int version, SgemmArgs *args) {
     
 }
@@ -10,4 +18,4 @@ double speedTestKernel(int version, SgemmArgs *args) {
 
 }
 
-}};  // namespace cks::sgemm
+}}  // namespace cks::sgemm

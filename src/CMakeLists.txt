@@ -1,3 +1,10 @@
-aux_source_directory(. SRC_LIST)
+enable_language(CUDA)
 
-message(SRC_LIST)
+set(CKS_MAIN_SRC)
+
+file(GLOB_RECURSE CKS_DATA_SRC 
+    src/common/*.cu
+    src/data/*.cu
+    src/kernel/*.cu)
+
+add_executable(main main.cu ${CKS_MAIN_SRC})
