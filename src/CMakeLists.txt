@@ -1,10 +1,9 @@
 enable_language(CUDA)
 
-set(CKS_MAIN_SRC)
+file(GLOB_RECURSE CKS_MAIN_SRC 
+    common/*.cu
+    data/*.cu
+    kernel/*.cu)
 
-file(GLOB_RECURSE CKS_DATA_SRC 
-    src/common/*.cu
-    src/data/*.cu
-    src/kernel/*.cu)
-
+message(STATUS "${CKS_MAIN_SRC}")
 add_executable(main main.cu ${CKS_MAIN_SRC})

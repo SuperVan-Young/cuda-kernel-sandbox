@@ -20,6 +20,8 @@ bool verifyKernel(int kernel, int version, KernelArgs *args);
 
 double speedTestKernel(int kernel, int version, KernelArgs *args);
 
+DataLoader *createDataLoader(int kernel);
+
 }} // namespace cks::common
 
 #endif

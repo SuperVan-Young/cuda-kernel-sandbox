@@ -1,6 +1,9 @@
 #ifndef CKS_DATA_SGEMM_CUH_
 #define CKS_DATA_SGEMM_CUH_
 
+#include "common/dtype.cuh"
+#include "common/error.cuh"
+
 namespace cks { namespace sgemm {
 
 class SgemmArgs : public cks::common::KernelArgs {
@@ -25,6 +28,15 @@ public:
         B = B_;
         C = C_;
     } 
+};
+
+class SgemmDataLoader : public cks::common::DataLoader {
+public:
+    cks::common::retCode_t loadData(cks::common::KernelArgs **p_data);
+    cks::common::retCode_t freeData(cks::common::KernelArgs *p_data);
+    int len();
+    cks::common::retCode_t step();
+    cks::common::retCode_t log();
 };
 
 }}  // namespace cks::sgemm

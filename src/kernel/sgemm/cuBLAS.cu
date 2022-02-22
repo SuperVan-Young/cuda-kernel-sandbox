@@ -6,7 +6,7 @@ namespace cks {namespace sgemm{
 
 retCode_t sgemmKernel_cuBLAS(SgemmArgs *args) {
     //TODO: finish this kernel
-    return RC_SUCCESS;
+    return cks::common::RC_SUCCESS;
 }
 
 }};  // namespace cks::sgemm

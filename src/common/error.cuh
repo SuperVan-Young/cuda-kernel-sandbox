@@ -3,12 +3,6 @@
 
 #include "common/dtype.cuh"
 
-// macros for retCode_t
-using cks::common::retCode_t;
-
-#define RC_SUCCESS  0
-#define RC_ERROR   -1
-
 #define CUDA_CALL(call)                                                  \
 do {                                                                     \
     const cudaError_t error_code = call;                                 \
