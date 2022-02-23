@@ -34,10 +34,19 @@ int main(int argc, char *argv[]) {
     for (int i = 0; i < p_dataloader->len(); i++) {
         cks::common::KernelArgs *p_args;
         p_dataloader->loadData(&p_args);
-        float res = cks::common::speedTestKernel(kernel_id, version_id, p_args);
-        printf("%g\n", res);
+
+        bool check = cks::common::verifyKernel(0, 1, p_args);
+
+        // float res = cks::common::speedTestKernel(kernel_id, version_id, p_args);
+        // printf("%g\n", res);
+
         p_dataloader->freeData(p_args);
         p_dataloader->step();
+
+        if (!check) {
+            printf("Verification failed\n");
+            break;
+        }
     }
 
     // free dataloader

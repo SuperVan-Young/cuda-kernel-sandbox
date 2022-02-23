@@ -6,6 +6,8 @@
 
 #include "data/sgemm.cuh"
 
+#include <cublas_v2.h>
+
 using cks::common::retCode_t;
 
 namespace cks {namespace sgemm{
