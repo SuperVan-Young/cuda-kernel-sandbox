@@ -1,8 +1,6 @@
 #ifndef CKS_COMMON_ERROR_CUH_
 #define CKS_COMMON_ERROR_CUH_
 
-#include "common/dtype.cuh"
-
 #define CUDA_CALL(call)                                                  \
 do {                                                                     \
     const cudaError_t error_code = call;                                 \
@@ -36,5 +34,18 @@ do {                                           \
     printf("    Error Text: %s\n", msg);       \
     exit(1);                                   \
 } while (0)
+
+namespace cks { namespace common { 
+
+/**
+ * Return type of low-level APIs
+ * It's recommended to call these APIs with macro `CKS_CALL`
+ */
+typedef enum {
+    RC_SUCCESS = 0,
+    RC_ERROR =  -1,
+} retCode_t;
+
+}};  // namespace cks::common
 
 #endif

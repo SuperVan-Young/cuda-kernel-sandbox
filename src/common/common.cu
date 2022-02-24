@@ -2,48 +2,27 @@
 
 namespace cks { namespace common {
 
-retCode_t runKernel(int kernel, int version, KernelArgs* args) {
+float runKernel(int kernel, int version, KernelArgs* args) {
     switch (kernel) {
         case KER_SGEMM: return cks::sgemm::runKernel(version, (cks::sgemm::SgemmArgs *)args);
-        default: return RC_ERROR;
+        default: return 0.0;
     }
 }
 
-bool verifyKernel(int kernel, int version, KernelArgs *args) {
-    KernelArgs *args_copy = nullptr;
+bool verifyKernel(int kernel, int version, DataLoader *dataloader) {
+    KernelArgs *p_test, *p_valid;
+    CKS_CALL(dataloader->loadData(&p_test));
+    CKS_CALL(dataloader->deepcopyData(&p_valid, p_test));
 
-    CKS_CALL(args->deepcopy(&args_copy));
+    runKernel(kernel, 0, p_valid);
+    runKernel(kernel, version, p_test);
 
-    CKS_CALL(runKernel(kernel, version, args));
-    CKS_CALL(runKernel(kernel, version, args_copy));
-
-    retCode_t ret;
-    if (args->equalResult(args_copy))
-        ret = RC_SUCCESS;
-    else
-        ret = RC_ERROR;
+    bool valid = dataloader->equalResult(p_valid, p_test);
     
-    CKS_CALL(args->destroyCopy(args_copy));
-    return ret;
-}
+    CKS_CALL(dataloader->freeData(p_test));
+    CKS_CALL(dataloader->freeData(p_valid));
 
-float speedTestKernel(int kernel, int version, KernelArgs *args) {
-    cudaEvent_t start, stop;
-    CUDA_CALL(cudaEventCreate(&start));
-    CUDA_CALL(cudaEventCreate(&stop));
-    CUDA_CALL(cudaEventRecord(start));
-    cudaEventQuery(start);
-
-    CKS_CALL(runKernel(kernel, version, args));
-
-    CUDA_CALL(cudaEventRecord(stop));
-    CUDA_CALL(cudaEventSynchronize(stop));
-    float elapsed_time;
-    CUDA_CALL(cudaEventElapsedTime(&elapsed_time, start, stop));
-    CUDA_CALL(cudaEventDestroy(start));
-    CUDA_CALL(cudaEventDestroy(stop));
-
-    return elapsed_time;
+    return valid;
 }
 
 DataLoader *createDataLoader(int kernel) {

@@ -30,23 +30,21 @@ int main(int argc, char *argv[]) {
     cks::common::DataLoader *p_dataloader = cks::common::createDataLoader(kernel_id);
 
     // for each data, verify and speedTest it
-    // TODO: complete main code <- sgemm verify and speedTest
     for (int i = 0; i < p_dataloader->len(); i++) {
+        // bool check = cks::common::verifyKernel(kernel_id, version_id, p_dataloader);
+        // if (!check) {
+        //     printf("Verification failed\n");
+        //     break;
+        // }
+
         cks::common::KernelArgs *p_args;
         p_dataloader->loadData(&p_args);
-
-        bool check = cks::common::verifyKernel(0, 1, p_args);
-
-        // float res = cks::common::speedTestKernel(kernel_id, version_id, p_args);
-        // printf("%g\n", res);
+        
+        float res = cks::common::runKernel(kernel_id, version_id, p_args);
+        p_dataloader->log(res);
 
         p_dataloader->freeData(p_args);
         p_dataloader->step();
-
-        if (!check) {
-            printf("Verification failed\n");
-            break;
-        }
     }
 
     // free dataloader

@@ -14,11 +14,9 @@
 
 namespace cks { namespace common {
 
-retCode_t runKernel(int kernel, int version, KernelArgs* args);
+float runKernel(int kernel, int version, KernelArgs* args);
 
-bool verifyKernel(int kernel, int version, KernelArgs *args);
-
-float speedTestKernel(int kernel, int version, KernelArgs *args);
+bool verifyKernel(int kernel, int version, DataLoader *dataloader);
 
 DataLoader *createDataLoader(int kernel);
 

@@ -3,14 +3,20 @@
 
 #include "common/dtype.cuh"
 #include "common/error.cuh"
+
 #include "data/sgemm.cuh"
 
-#include "kernel/sgemm/cuBLAS.cuh"
-#include "kernel/sgemm/v1.cuh"
+#include <cublas_v2.h>
 
 namespace cks { namespace sgemm {
 
-cks::common::retCode_t runKernel(int version, cks::sgemm::SgemmArgs *args);
+float runKernel(int version, cks::sgemm::SgemmArgs *args);
+
+void sgemmKernel_cuBLAS(int M, int N, int K, const float *d_alpha, const float *d_beta, 
+                        const float *d_A, const float *d_B, float *d_C);
+
+void sgemmKernel_v1(int M, int N, int K, const float *d_alpha, const float *d_beta, 
+                    const float *d_A, const float *d_B, float *d_C);
 
 }}  // namespace cks::sgemm
 

@@ -30,10 +30,6 @@ public:
         B = B_;
         C = C_;
     }
-
-    cks::common::retCode_t deepcopy(KernelArgs **p_target);
-    cks::common::retCode_t destroyCopy(KernelArgs *p_target);
-    bool equalResult(KernelArgs *p_target);
 };
 
 class SgemmDataLoader : public cks::common::DataLoader {
@@ -41,15 +37,17 @@ public:
     int width, num, inc;
     float alpha, beta;
     SgemmDataLoader() {
-        width = 32;
-        num = 32;
-        inc = 32;
+        width = 1024;
+        num = 10;
+        inc = 1024;
         alpha = 1.0;
         beta = 1.0;
     }
 
     cks::common::retCode_t loadData(cks::common::KernelArgs **p_data);
     cks::common::retCode_t freeData(cks::common::KernelArgs *p_data);
+    cks::common::retCode_t deepcopyData(cks::common::KernelArgs **p_dst, cks::common::KernelArgs *p_src);
+    bool equalResult(cks::common::KernelArgs *p_1, cks::common::KernelArgs *p_2);
     int len();
     cks::common::retCode_t step();
     cks::common::retCode_t log(float perf);
