@@ -8,9 +8,10 @@ int main(int argc, char *argv[]) {
     // parseargs
     int kernel_id = 0;
     int version_id = 0;
+    int n = 10;
 
     int opt;
-    const char *optstring = "k:v:";
+    const char *optstring = "k:v:n::";
 
     while ((opt = getopt(argc, argv, optstring)) != -1) {
         switch (opt) {
@@ -20,27 +21,30 @@ int main(int argc, char *argv[]) {
             case 'v':
                 sscanf(optarg, "%d", &version_id);
                 break;
+            case 'n':
+                sscanf(optarg, "%d", &n);
+                break;
             default:
                 printf("Unknown argument %c\n", opt);
                 exit(1);
         }
     }
+
+    printf("\nRunning speedtest on kernel %d version %d\n", kernel_id, version_id);
     
     // create dataloader 
     cks::common::DataLoader *p_dataloader = cks::common::createDataLoader(kernel_id);
 
-    // for each data, verify and speedTest it
+    // for each data, speedTest it
     for (int i = 0; i < p_dataloader->len(); i++) {
-        // bool check = cks::common::verifyKernel(kernel_id, version_id, p_dataloader);
-        // if (!check) {
-        //     printf("Verification failed\n");
-        //     break;
-        // }
 
         cks::common::KernelArgs *p_args;
         p_dataloader->loadData(&p_args);
-        
-        float res = cks::common::runKernel(kernel_id, version_id, p_args);
+
+        float res = 0;
+        for (int j = 0; j < n; j++)
+            res += cks::common::runKernel(kernel_id, version_id, p_args);
+        res /= n;
         p_dataloader->log(res);
 
         p_dataloader->freeData(p_args);

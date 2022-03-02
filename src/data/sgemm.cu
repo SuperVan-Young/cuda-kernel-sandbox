@@ -54,8 +54,9 @@ cks::common::retCode_t SgemmDataLoader::step() {
     return cks::common::RC_SUCCESS;
 }
 
-cks::common::retCode_t SgemmDataLoader::log(float perf) {
-    printf("(%4d): %.4g ms\n", width, perf);
+cks::common::retCode_t SgemmDataLoader::log(float elapsed_time) {
+    float gflops = 2.*1e-6 * width * width * width / elapsed_time;
+    printf("(%5d): %.5f ms    %f GFLOPS\n", width, elapsed_time, gflops);
     return cks::common::RC_SUCCESS;
 }
 

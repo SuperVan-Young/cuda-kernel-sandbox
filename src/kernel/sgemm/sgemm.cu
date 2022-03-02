@@ -39,7 +39,7 @@ float runKernel(int version, SgemmArgs *args) {
     }
 
     // start timing and call kernel function
-
+    CUDA_CALL(cudaDeviceSynchronize());
     cudaEvent_t start, stop;
     CUDA_CALL(cudaEventCreate(&start));
     CUDA_CALL(cudaEventCreate(&stop));
@@ -47,14 +47,17 @@ float runKernel(int version, SgemmArgs *args) {
     cudaEventQuery(start);
     //==========================================================================
 
+    CUDA_CALL(cudaDeviceSynchronize());
     switch (version) {
         case 0:  sgemmKernel_cuBLAS(M, N, K, h_alpha, h_beta, d_A, d_B, d_C); break;
         case 1:  sgemmKernel_v1(M, N, K, d_alpha, d_beta, d_A, d_B, d_C); break;
         default: break;
     }
+    CUDA_CALL(cudaDeviceSynchronize());
+    
     //==========================================================================
 
-    CUDA_CALL(cudaGetLastError());
+    // CUDA_CALL(cudaGetLastError());
     CUDA_CALL(cudaEventRecord(stop));
     CUDA_CALL(cudaEventSynchronize(stop));
     float elapsed_time;
@@ -64,6 +67,8 @@ float runKernel(int version, SgemmArgs *args) {
 
     // clean up the memory
     CUDA_CALL(cudaMemcpy(h_C, d_C, sizeof(float)*length_C, cudaMemcpyDeviceToHost));
+    CUDA_CALL(cudaDeviceSynchronize());
+
     CUDA_CALL(cudaFree(d_alpha));
     CUDA_CALL(cudaFree(d_beta));
     CUDA_CALL(cudaFree(d_A));

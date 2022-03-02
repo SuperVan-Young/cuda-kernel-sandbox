@@ -10,10 +10,14 @@ file(GLOB_RECURSE CKS_MAIN_LIB
 
 add_library(cks ${CKS_MAIN_LIB})
 
-add_executable(main main.cu)
-target_compile_features(main PRIVATE cxx_std_11)
-target_link_libraries(main cks ${CUBLAS_LIBRARIES})
+add_executable(speedtest speedtest.cu)
+target_compile_features(speedtest PRIVATE cxx_std_11)
+target_link_libraries(speedtest cks ${CUBLAS_LIBRARIES})
 
-install(TARGETS main cks
+add_executable(verify verify.cu)
+target_compile_features(verify PRIVATE cxx_std_11)
+target_link_libraries(verify cks ${CUBLAS_LIBRARIES})
+
+install(TARGETS speedtest verify cks
         RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
         ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR})

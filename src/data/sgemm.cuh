@@ -50,7 +50,7 @@ public:
     bool equalResult(cks::common::KernelArgs *p_1, cks::common::KernelArgs *p_2);
     int len();
     cks::common::retCode_t step();
-    cks::common::retCode_t log(float perf);
+    cks::common::retCode_t log(float elapsed_time);
 };
 
 }}  // namespace cks::sgemm
