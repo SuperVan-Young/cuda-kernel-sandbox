@@ -32,18 +32,38 @@ public:
     }
 };
 
+/**
+ * @brief SgemmDataloader
+ * 
+ */
 class SgemmDataLoader : public cks::common::DataLoader {
 public:
     int width, num, inc;
     float alpha, beta;
-    SgemmDataLoader() {
-        width = 1024;
-        num = 10;
-        inc = 1024;
-        alpha = 1.0;
-        beta = 1.0;
-    }
+    
+    SgemmDataLoader();
+    cks::common::retCode_t loadData(cks::common::KernelArgs **p_data);
+    cks::common::retCode_t freeData(cks::common::KernelArgs *p_data);
+    cks::common::retCode_t deepcopyData(cks::common::KernelArgs **p_dst, cks::common::KernelArgs *p_src);
+    bool equalResult(cks::common::KernelArgs *p_1, cks::common::KernelArgs *p_2);
+    int len();
+    cks::common::retCode_t step();
+    cks::common::retCode_t log(float elapsed_time);
+};
 
+/**
+ * @brief Fast Sgemm Data Loader that share matrices A, B and C between testing data.
+ *     deepcopy always copies C to C_ref, so it should only be called once for a data
+ * 
+ */
+
+class FastSgemmDataLoader : public cks::common::DataLoader {
+public:
+    int width, num, inc;
+    float alpha, beta;
+    float *A, *B, *C, *C_ref;
+
+    FastSgemmDataLoader();
     cks::common::retCode_t loadData(cks::common::KernelArgs **p_data);
     cks::common::retCode_t freeData(cks::common::KernelArgs *p_data);
     cks::common::retCode_t deepcopyData(cks::common::KernelArgs **p_dst, cks::common::KernelArgs *p_src);

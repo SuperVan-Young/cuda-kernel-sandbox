@@ -28,7 +28,7 @@ bool verifyKernel(int kernel, int version, DataLoader *dataloader) {
 DataLoader *createDataLoader(int kernel) {
     DataLoader *p = nullptr;
     switch (kernel) {
-        case KER_SGEMM: p = new cks::sgemm::SgemmDataLoader(); break;
+        case KER_SGEMM: p = new cks::sgemm::FastSgemmDataLoader(); break;
         default: break;
     }
     return p;  // should delete p in the end!

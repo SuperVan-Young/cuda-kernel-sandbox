@@ -37,7 +37,7 @@ int main(int argc, char *argv[]) {
         if (!res) {
             printf("Verification on kernel %d version %d failed!\n", kernel_id, version_id);
             cks::common::destroyDataLoader(p_dataloader);
-            return;
+            return 0;
         }
         p_dataloader->step();
         printf(".");

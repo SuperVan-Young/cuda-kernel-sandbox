@@ -12,6 +12,13 @@ static void randomInitArray(float *array, int length) {
     }
 }
 
+SgemmDataLoader::SgemmDataLoader(){
+    width = 1024;
+    num = 8;
+    inc = 1024;
+    alpha = 1.0;
+    beta = 1.0;
+}
 
 cks::common::retCode_t SgemmDataLoader::loadData(cks::common::KernelArgs **p_data) {
     int length = width * width;
