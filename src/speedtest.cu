@@ -41,10 +41,7 @@ int main(int argc, char *argv[]) {
         cks::common::KernelArgs *p_args;
         p_dataloader->loadData(&p_args);
 
-        float res = 0;
-        for (int j = 0; j < n; j++)
-            res += cks::common::runKernel(kernel_id, version_id, p_args);
-        res /= n;
+        float res = cks::common::speedTestKernel(kernel_id, version_id, p_args);
         p_dataloader->log(res);
 
         p_dataloader->freeData(p_args);

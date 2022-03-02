@@ -12,6 +12,8 @@ namespace cks { namespace sgemm {
 
 float runKernel(int version, cks::sgemm::SgemmArgs *args);
 
+float speedTestKernel(int version, cks::sgemm::SgemmArgs *args);
+
 void sgemmKernel_cuBLAS(int M, int N, int K, const float *d_alpha, const float *d_beta, 
                         const float *d_A, const float *d_B, float *d_C);
 

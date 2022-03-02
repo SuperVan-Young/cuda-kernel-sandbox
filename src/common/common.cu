@@ -9,6 +9,13 @@ float runKernel(int kernel, int version, KernelArgs* args) {
     }
 }
 
+float speedTestKernel(int kernel, int version, KernelArgs* args) {
+    switch (kernel) {
+        case KER_SGEMM: return cks::sgemm::speedTestKernel(version, (cks::sgemm::SgemmArgs *)args);
+        default: return 0.0;
+    }
+}
+
 bool verifyKernel(int kernel, int version, DataLoader *dataloader) {
     KernelArgs *p_test, *p_valid;
     CKS_CALL(dataloader->loadData(&p_test));

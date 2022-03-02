@@ -16,6 +16,8 @@ namespace cks { namespace common {
 
 float runKernel(int kernel, int version, KernelArgs* args);
 
+float speedTestKernel(int kernel, int version, KernelArgs* args);
+
 bool verifyKernel(int kernel, int version, DataLoader *dataloader);
 
 DataLoader *createDataLoader(int kernel);
