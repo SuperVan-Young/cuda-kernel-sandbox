@@ -85,7 +85,7 @@ bool FastSgemmDataLoader::equalResult(cks::common::KernelArgs *p_1, cks::common:
 
     if (length_C_1 != length_C_2)
         return false;
-    float eps = 1e-6;
+    float eps = 1e-2;
     for (int i = 0; i < length_C_1; i++) {
         if (abs(C_1[i] - C_2[i]) > eps)
             return false;

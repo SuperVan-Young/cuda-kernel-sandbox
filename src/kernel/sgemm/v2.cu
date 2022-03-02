@@ -1,10 +1,9 @@
 #include "kernel/sgemm.cuh"
 
 /**
- * Naive kernel function.
- * Divide C into tiles of 32 * 32.
- * In each tile, a thread take care of an element, i.e., compute the product
- * of a row vector in A and a column vector in B.
+ * Use shared memory to coalesce memory reference to B.
+ * Read a 32 * 32 tile from A and B into shared memory
+ * 
  */
 
 #define KERNEL_SIZE 32
@@ -13,6 +12,8 @@
 #define A(i,j) A[(i) + (j) * lda]
 #define B(i,j) B[(i) + (j) * ldb]
 #define C(i,j) C[(i) + (j) * ldc]
+#define s_A(i,j) s_A[(i) + (j) * KERNEL_SIZE]
+#define s_B(i,j) s_B[(i) + (j) * KERNEL_SIZE]
 
 namespace cks {namespace sgemm{
 
@@ -29,12 +30,29 @@ void kernelFunc(int M, int N, int K, const float *alpha, const float *beta,
     int ty = threadIdx.y;
     int i = bx * KERNEL_SIZE + tx;
     int j = by * KERNEL_SIZE + ty;
+    int k;
+    int n = DIV(K);  // number of tiles on A and B
+    float sum = 0;
+
+    __shared__ float s_A[KERNEL_SIZE*KERNEL_SIZE];
+    __shared__ float s_B[KERNEL_SIZE*KERNEL_SIZE];
+
     if (i >= M || j >= N)
         return;
 
-    float sum = 0;
-    for (int k = 0; k < K; k++) {
-        sum += A(i, k) * B(k, j);
+    for (int tile = 0; tile < n; tile++) {
+        // copy data to shared memory
+        k = tile * KERNEL_SIZE + ty;
+        s_A(tx, ty) = k < K ? A(i, k) : 0;
+
+        k = tile * KERNEL_SIZE + tx;
+        s_B(tx, ty) = k < K ? B(k, j) : 0;
+        __syncthreads();
+
+        for (int l = 0; l < KERNEL_SIZE; l++) {
+            sum += s_A(tx, l) * s_B(l, ty);
+        }
+        __syncthreads();  // this is vital!
     }
     C(i, j) = *alpha * sum + *beta * C(i, j);
 
@@ -42,7 +60,7 @@ void kernelFunc(int M, int N, int K, const float *alpha, const float *beta,
 
 }
 
-void sgemmKernel_v1(int M, int N, int K, const float *d_alpha, const float *d_beta, 
+void sgemmKernel_v2(int M, int N, int K, const float *d_alpha, const float *d_beta, 
                     const float *d_A, const float *d_B, float *d_C) {
 
     int div_M = DIV(M);
