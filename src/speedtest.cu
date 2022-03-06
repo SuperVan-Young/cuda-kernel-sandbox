@@ -8,7 +8,6 @@ int main(int argc, char *argv[]) {
     // parseargs
     int kernel_id = 0;
     int version_id = 0;
-    int n = 10;
 
     int opt;
     const char *optstring = "k:v:n::";
@@ -20,9 +19,6 @@ int main(int argc, char *argv[]) {
                 break;
             case 'v':
                 sscanf(optarg, "%d", &version_id);
-                break;
-            case 'n':
-                sscanf(optarg, "%d", &n);
                 break;
             default:
                 printf("Unknown argument %c\n", opt);

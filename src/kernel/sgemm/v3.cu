@@ -1,10 +1,8 @@
 #include "kernel/sgemm.cuh"
 
 /**
- * Optimize bank conflict when referencing shared memory s_B
- * by transposing it when copying from B.
  * 
- * But the performance got worse, I don't know why...
+ * 
  */
 
 #define KERNEL_SIZE 32
@@ -47,11 +45,11 @@ void kernelFunc(int M, int N, int K, const float *alpha, const float *beta,
         s_A(tx, ty) = k < K ? A(i, k) : 0;
 
         k = tile * KERNEL_SIZE + tx;
-        s_B(ty, tx) = k < K ? B(k, j) : 0;
+        s_B(tx, ty) = k < K ? B(k, j) : 0;
         __syncthreads();
 
         for (int l = 0; l < KERNEL_SIZE; l++) {
-            sum += s_A(tx, l) * s_B(ty, l);
+            sum += s_A(tx, l) * s_B(l, ty);
         }
         __syncthreads();  // this is vital!
     }

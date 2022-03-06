@@ -4,6 +4,9 @@
  * Use shared memory to coalesce memory reference to B.
  * Read a 32 * 32 tile from A and B into shared memory
  * 
+ * Transposing s_B could, theoretically, lead to more coalesced memory refernce,
+ * thus boost the speed. But the experiment result fails to support this idea.
+ * The following setting is the best I could get.
  */
 
 #define KERNEL_SIZE 32
@@ -13,7 +16,7 @@
 #define B(i,j) B[(i) + (j) * ldb]
 #define C(i,j) C[(i) + (j) * ldc]
 #define s_A(i,j) s_A[(i) + (j) * KERNEL_SIZE]
-#define s_B(i,j) s_B[(i) + (j) * KERNEL_SIZE]
+#define s_B(i,j) s_B[(i) + (j) * KERNEL_SIZE]  // try switching i and j
 
 namespace cks {namespace sgemm{
 
