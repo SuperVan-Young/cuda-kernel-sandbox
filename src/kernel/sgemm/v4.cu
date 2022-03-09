@@ -3,7 +3,7 @@
 /**
  * This time we follow CUTLASS' code.
  * First, we add configurable block tiling.
- * A block of MS * NS in C is calculated with step KS
+ * A block of MS * NS in C is calculated with step KS.
  * Here we introduce addition combination law, which affects the result accuracy
  */
 
