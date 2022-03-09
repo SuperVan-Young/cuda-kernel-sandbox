@@ -8,7 +8,7 @@ namespace cks { namespace sgemm{
 
 static void randomInitArray(float *array, int length) {
     std::default_random_engine generator;
-    std::uniform_real_distribution<float> distribution(-10.0, 10.0);
+    std::uniform_real_distribution<float> distribution(-1.0, 1.0);
     for (int i = 0; i < length; i++) {
         array[i] = distribution(generator);
     }
@@ -87,9 +87,12 @@ bool FastSgemmDataLoader::equalResult(cks::common::KernelArgs *p_1, cks::common:
         return false;
     float eps = 1e-2;
     for (int i = 0; i < length_C_1; i++) {
-        if (abs(C_1[i] - C_2[i]) > eps)
+        if (abs(C_1[i] - C_2[i]) > eps) {
+            printf("|%f - %f| > %f\n", C_1[i], C_2[i], eps);
             return false;
+        }
     }
+    
     return true;
 }
 

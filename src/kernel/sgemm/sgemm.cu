@@ -53,6 +53,7 @@ float runKernel(int version, SgemmArgs *args) {
         case 1:  sgemmKernel_v1(M, N, K, d_alpha, d_beta, d_A, d_B, d_C); break;
         case 2:  sgemmKernel_v2(M, N, K, d_alpha, d_beta, d_A, d_B, d_C); break;
         case 3:  sgemmKernel_v3(M, N, K, d_alpha, d_beta, d_A, d_B, d_C); break;
+        case 4:  sgemmKernel_v4(M, N, K, d_alpha, d_beta, d_A, d_B, d_C); break;
         default: break;
     }
     CUDA_CALL(cudaDeviceSynchronize());
@@ -133,6 +134,7 @@ float speedTestKernel(int version, SgemmArgs *args) {
             case 1:  sgemmKernel_v1(M, N, K, d_alpha, d_beta, d_A, d_B, d_C); break;
             case 2:  sgemmKernel_v2(M, N, K, d_alpha, d_beta, d_A, d_B, d_C); break;
             case 3:  sgemmKernel_v3(M, N, K, d_alpha, d_beta, d_A, d_B, d_C); break;
+            case 4:  sgemmKernel_v4(M, N, K, d_alpha, d_beta, d_A, d_B, d_C); break;
             default: break;
         }
         CUDA_CALL(cudaDeviceSynchronize());

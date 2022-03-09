@@ -25,6 +25,9 @@ void sgemmKernel_v2(int M, int N, int K, const float *d_alpha, const float *d_be
 
 void sgemmKernel_v3(int M, int N, int K, const float *d_alpha, const float *d_beta, 
                     const float *d_A, const float *d_B, float *d_C);
+
+void sgemmKernel_v4(int M, int N, int K, const float *d_alpha, const float *d_beta, 
+                    const float *d_A, const float *d_B, float *d_C);
 }}  // namespace cks::sgemm
 
 #endif
